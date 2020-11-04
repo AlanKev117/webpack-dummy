@@ -1,5 +1,11 @@
 import "../css/index.css"
-
-console.log("Hola Webpack")
+import toGreen from "./module"
 
 document.querySelector("body").innerHTML = "<div class='color'>Hola</div>"
+toGreen()
+
+if (module.hot) {
+    module.hot.accept("./module.js", () => {
+        toGreen()
+    })
+}

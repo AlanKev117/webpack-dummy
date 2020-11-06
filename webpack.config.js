@@ -24,18 +24,30 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    MiniCssExtractPlugin.loader, /* Transpila archivos (producción) */
-                    // "style-loader" /* Inyecta archivos (dev) */,
+                    // MiniCssExtractPlugin.loader, /* Transpila archivos (producción) */
+                    "style-loader" /* Inyecta archivos (dev) */,
                     "css-loader",
                 ],
             },
+            {
+                test: /\.jpg|png|gif|woff|eot|ttf|svg|mp4|webm$/,
+                use: {
+                    loader: "url-loader",
+                    options: {
+                        limit: 900000
+                    }
+                }
+            }
         ],
+    },
+    resolve: {
+        extensions: [".js", ".jsx"]
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "index.html"),
             filename: path.join(".", "index.html")
         }),
-        new MiniCssExtractPlugin({ filename: path.resolve("css", "[name].css")})
+        // new MiniCssExtractPlugin({ filename: path.resolve(__dirname, "css", "[name].css")})
     ],
 }

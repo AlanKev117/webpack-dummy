@@ -1,11 +1,7 @@
+import React from 'react'
+import { render } from "react-dom"
+import App from "./components/App.js"
 import "../css/index.css"
-import toGreen from "./module"
 
-document.querySelector("body").innerHTML = "<div class='color'>Hola</div>"
-toGreen()
+render(<App />, document.getElementById("root"))
 
-if (module.hot) {
-    module.hot.accept("./module.js", () => {
-        toGreen()
-    })
-}

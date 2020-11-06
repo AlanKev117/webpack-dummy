@@ -6,7 +6,6 @@ const webpack = require("webpack")
 
 module.exports = {
     entry: path.resolve(__dirname, "src", "js", "index.js"),
-    mode: "development",
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: path.join("js", "[name].js"),
@@ -18,23 +17,25 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.jsx?$/,
                 use: "babel-loader",
-                exclude: path.resolve(__dirname, "node_modules")
+                exclude: path.resolve(__dirname, "node_modules"),
             },
             {
                 test: /\.css$/,
                 use: [
-                    // MiniCssExtractPlugin.loader, /* Transpila archivos (producción) */
-                    "style-loader" /* Inyecta archivos (dev) */,
+                    MiniCssExtractPlugin.loader, /* Transpila archivos (producción) */
+                    // "style-loader" /* Inyecta archivos (dev) */,
                     "css-loader",
                 ],
             },
         ],
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin() /* Para hot reload */,
-        new HtmlWebpackPlugin({ title: "Plugins" }),
-        // new MiniCssExtractPlugin({ filename: "css/[name].css" }), /* Transpila archivos (producción) */
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, "index.html"),
+            filename: path.join(".", "index.html")
+        }),
+        new MiniCssExtractPlugin({ filename: path.resolve("css", "[name].css")})
     ],
 }

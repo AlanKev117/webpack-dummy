@@ -26,7 +26,8 @@ module.exports = {
                 use: [
                     // MiniCssExtractPlugin.loader, /* Transpila archivos (producción) */
                     "style-loader" /* Inyecta archivos (dev) */,
-                    "css-loader",
+                    { loader: "css-loader", options: { importLoaders: 1 } },
+                    "postcss-loader"
                 ],
             },
             {
@@ -34,19 +35,46 @@ module.exports = {
                 use: {
                     loader: "url-loader",
                     options: {
-                        limit: 900000
-                    }
-                }
-            }
+                        limit: 900000,
+                    },
+                },
+            },
+            {
+                test: /\.less$/,
+                use: [
+                    // MiniCssExtractPlugin.loader, /* Transpila archivos (producción) */
+                    "style-loader" /* Inyecta archivos (dev) */,
+                    "css-loader",
+                    "less-loader",
+                ],
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    // MiniCssExtractPlugin.loader, /* Transpila archivos (producción) */
+                    "style-loader" /* Inyecta archivos (dev) */,
+                    "css-loader",
+                    "sass-loader",
+                ],
+            },
+            {
+                test: /\.styl$/,
+                use: [
+                    // MiniCssExtractPlugin.loader, /* Transpila archivos (producción) */
+                    "style-loader" /* Inyecta archivos (dev) */,
+                    "css-loader",
+                    "stylus-loader",
+                ],
+            },
         ],
     },
     resolve: {
-        extensions: [".js", ".jsx"]
+        extensions: [".js", ".jsx"],
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "index.html"),
-            filename: path.join(".", "index.html")
+            filename: path.join(".", "index.html"),
         }),
         // new MiniCssExtractPlugin({ filename: path.resolve(__dirname, "css", "[name].css")})
     ],

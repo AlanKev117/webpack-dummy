@@ -5,7 +5,10 @@ const HtmlWebpackPlugin = require("html-webpack-plugin")
 const webpack = require("webpack")
 
 module.exports = {
-    entry: path.resolve(__dirname, "src", "js", "index.js"),
+    entry: {
+        index: path.resolve(__dirname, "src", "js", "index.js"),
+        contact: path.resolve(__dirname, "src", "js", "contact.js"),
+    },
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: path.join("js", "[name].js"),
@@ -24,26 +27,30 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    // MiniCssExtractPlugin.loader, /* Transpila archivos (producción) */
-                    "style-loader" /* Inyecta archivos (dev) */,
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: { publicPath: "" },
+                    },
                     { loader: "css-loader", options: { importLoaders: 1 } },
-                    "postcss-loader"
+                    "postcss-loader",
                 ],
             },
             {
-                test: /\.jpg|png|gif|woff|eot|ttf|svg|mp4|webm$/,
+                test: /\.(jpg|png|gif|woff|eot|ttf|svg|mp4|webm)$/,
                 use: {
                     loader: "url-loader",
                     options: {
-                        limit: 900000,
+                        limit: 10000,
                     },
                 },
             },
             {
                 test: /\.less$/,
                 use: [
-                    // MiniCssExtractPlugin.loader, /* Transpila archivos (producción) */
-                    "style-loader" /* Inyecta archivos (dev) */,
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: { publicPath: "" },
+                    },
                     "css-loader",
                     "less-loader",
                 ],
@@ -51,8 +58,10 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                    // MiniCssExtractPlugin.loader, /* Transpila archivos (producción) */
-                    "style-loader" /* Inyecta archivos (dev) */,
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: { publicPath: "" },
+                    },
                     "css-loader",
                     "sass-loader",
                 ],
@@ -60,8 +69,10 @@ module.exports = {
             {
                 test: /\.styl$/,
                 use: [
-                    // MiniCssExtractPlugin.loader, /* Transpila archivos (producción) */
-                    "style-loader" /* Inyecta archivos (dev) */,
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: { publicPath: "" },
+                    },
                     "css-loader",
                     "stylus-loader",
                 ],
@@ -76,6 +87,19 @@ module.exports = {
             template: path.resolve(__dirname, "index.html"),
             filename: path.join(".", "index.html"),
         }),
-        // new MiniCssExtractPlugin({ filename: path.resolve(__dirname, "css", "[name].css")})
+        new webpack.DllReferencePlugin({
+            manifest: require("./modules-manifest.json"),
+        }),
+        new MiniCssExtractPlugin({
+            filename: path.join("css", "[name].css"),
+            chunkFilename: path.join("css", "[id].css"),
+        }),
     ],
+    // optimization: {
+    //     splitChunks: {
+    //         chunks: "all",
+    //         minSize: 0,
+    //         name: "commons",
+    //     },
+    // },
 }

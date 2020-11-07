@@ -6,6 +6,8 @@
   "scripts": {
     "start": "webpack serve",
     "build": "webpack --mode production",
+    "build:dll": "webpack --config webpack.dll.config.js",
+    "clean": "rm -rf dist",
     "build:external": "webpack --config ./external/webpack.config.js"
   },
   "keywords": [
